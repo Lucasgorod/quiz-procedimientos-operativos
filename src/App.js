@@ -26,12 +26,17 @@ function App() {
   return (
     <>
       {mode === 'landing' && <Landing onModeSelect={handleModeSelect} />}
-      {mode === 'teacher' && <TeacherView onModeSelect={handleModeSelect} />}
+      {mode === 'teacher' && (
+        <TeacherView
+          onModeSelect={handleModeSelect}
+          sessionCode={sessionCode}
+        />
+      )}
       {mode === 'student' && <StudentView sessionCode={sessionCode} />}
       {mode === 'results' && (
         <ResultsView 
           sessionCode={sessionCode} 
-          onBack={() => handleModeSelect('teacher')} 
+          onBack={() => handleModeSelect('teacher', sessionCode)}
         />
       )}
     </>

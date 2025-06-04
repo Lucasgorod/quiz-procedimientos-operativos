@@ -44,15 +44,23 @@ export const questions = [
     type: 'match',
     title: '3. Relacionar Columnas',
     subtitle: 'Relacioná cada concepto con su definición:',
+    definitions: [
+      {
+        id: '1',
+        text: 'Describe cómo realizar una tarea minimizando riesgos para la salud y seguridad'
+      },
+      {
+        id: '2',
+        text: 'Describe cómo operar un sistema o proceso de forma eficiente y controlada'
+      }
+    ],
     pairs: [
-      { 
-        concept: 'A. Procedimiento Operativo', 
-        definition: '2. Describe cómo operar un sistema o proceso de forma eficiente y controlada',
+      {
+        concept: 'A. Procedimiento Operativo',
         correctAnswer: '2'
       },
-      { 
-        concept: 'B. Práctica de Trabajo Seguro', 
-        definition: '1. Describe cómo realizar una tarea minimizando riesgos para la salud y seguridad',
+      {
+        concept: 'B. Práctica de Trabajo Seguro',
         correctAnswer: '1'
       }
     ]

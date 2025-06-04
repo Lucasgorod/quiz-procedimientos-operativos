@@ -182,33 +182,36 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
           {/* Match */}
           {question.type === 'match' && (
             <div className="space-y-6">
+              <div className="mb-4 space-y-2">
+                {question.definitions.map((def) => (
+                  <p key={def.id} className="text-gray-300">
+                    {def.id}. {def.text}
+                  </p>
+                ))}
+              </div>
               {question.pairs.map((pair, idx) => {
-                // Usar clave segura para el estado
-                const safeKey = matchKeyMap[pair.concept];
                 return (
                   <div key={idx} className="space-y-3">
                     <p className="font-medium">{pair.concept}</p>
                     <div className="flex gap-3">
-                      <button
-                        onClick={() => setAnswers({ ...answers, q3: { ...answers.q3, [pair.concept]: '1' }})}
-                        className={`px-6 py-2 rounded-full transition-all ${
-                          answers.q3[pair.concept] === '1'
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-800 hover:bg-gray-700'
-                        }`}
-                      >
-                        Definición 1
-                      </button>
-                      <button
-                        onClick={() => setAnswers({ ...answers, q3: { ...answers.q3, [pair.concept]: '2' }})}
-                        className={`px-6 py-2 rounded-full transition-all ${
-                          answers.q3[pair.concept] === '2'
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-gray-800 hover:bg-gray-700'
-                        }`}
-                      >
-                        Definición 2
-                      </button>
+                      {question.definitions.map((def) => (
+                        <button
+                          key={def.id}
+                          onClick={() =>
+                            setAnswers({
+                              ...answers,
+                              q3: { ...answers.q3, [pair.concept]: def.id }
+                            })
+                          }
+                          className={`px-6 py-2 rounded-full transition-all ${
+                            answers.q3[pair.concept] === def.id
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-gray-800 hover:bg-gray-700'
+                          }`}
+                        >
+                          {def.id}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 );

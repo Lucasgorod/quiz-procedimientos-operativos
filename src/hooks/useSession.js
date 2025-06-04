@@ -18,7 +18,13 @@ export const useSession = (sessionCode) => {
       const data = snapshot.val();
       if (data) {
         setSession(data);
-        setResponses(Object.values(data.responses || {}));
+        // Ordenar respuestas por fecha de envío (opcional, pero útil)
+        const responsesArr = data.responses ? Object.values(data.responses) : [];
+        responsesArr.sort((a, b) => (a.submittedAt || 0) - (b.submittedAt || 0));
+        setResponses(responsesArr);
+      } else {
+        setSession(null);
+        setResponses([]);
       }
       setLoading(false);
     });

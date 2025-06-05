@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, TrendingUp, CheckCircle, XCircle } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { useSession } from '../hooks/useSession';
 
 
@@ -36,27 +36,14 @@ const ResultsView = ({ sessionCode, quizId, onBack, questions = [] }) => {
       // Q2
       if (answers.q2) stats.q2[answers.q2]++;
 
-      // Q3 - Relacionar columnas con manejo de claves sanitizadas
-      if (answers.q3 && questions[2]) {
-        let correctCount = 0;
-        const expectedPairs = questions[2].pairs || [];
-
-        expectedPairs.forEach(pair => {
-          // Intentar con clave sanitizada primero, luego original
-          const sanitizedKey = pair.concept.replace(/[.#$\[\]/]/g, '_');
-          const userAnswer = answers.q3[sanitizedKey] || answers.q3[pair.concept];
-
-          if (userAnswer === pair.correctAnswer) {
-            correctCount++;
-          }
-        });
-
-        const isFullyCorrect = correctCount === expectedPairs.length;
-        if (isFullyCorrect) {
-          stats.q3.correct++;
-        } else {
-          stats.q3.incorrect++;
-        }
+      // Q3
+      if (answers.q3) {
+        // Mapear claves seguras a los textos originales para comparar
+        const a = answers.q3['A'] || answers.q3['A. Procedimiento Operativo'];
+        const b = answers.q3['B'] || answers.q3['B. Práctica de Trabajo Seguro'];
+        const correctQ3 = a === '2' && b === '1';
+        if (correctQ3) stats.q3.correct++;
+        else stats.q3.incorrect++;
       }
       // Q4
       if (answers.q4) stats.q4.push(answers.q4);
@@ -99,7 +86,7 @@ const ResultsView = ({ sessionCode, quizId, onBack, questions = [] }) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
           {/* Pregunta 1 */}
           <div className="bg-gray-900 rounded-3xl p-6">
             <h3 className="text-xl font-medium mb-4">Pregunta 1: Verdadero o Falso</h3>
@@ -196,9 +183,9 @@ const ResultsView = ({ sessionCode, quizId, onBack, questions = [] }) => {
           </div>
 
           {/* Pregunta 5 */}
-          <div className="bg-gray-900 rounded-3xl p-6 lg:col-span-2">
+          <div className="bg-gray-900 rounded-3xl p-6 md:col-span-2">
             <h3 className="text-xl font-medium mb-4">Pregunta 5: Palabras Más Usadas</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-400 mb-2">Primer espacio:</p>
                 {Object.keys(stats.q5.blank1).length > 0 ? (

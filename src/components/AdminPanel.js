@@ -49,24 +49,14 @@ const AdminPanel = () => {
 
   const handleSave = useCallback(async () => {
     if (!database || !editingId) return;
-    if (!quiz.title || quiz.questions.length === 0) {
-      alert('El quiz debe tener título y al menos una pregunta');
-      return;
-    }
+    if (!quiz.title || quiz.questions.length === 0) return;
     setStatus('saving');
-    try {
-      await set(ref(database, `quizzes/${editingId}`), {
-        ...quiz,
-        updatedAt: Date.now(),
-        id: editingId
-      });
-      setStatus('saved');
-      setTimeout(() => setStatus('idle'), 2000);
-    } catch (error) {
-      console.error('Error guardando:', error);
-      alert('Error al guardar el quiz');
-      setStatus('idle');
-    }
+    await set(ref(database, `quizzes/${editingId}`), {
+      ...quiz,
+      updatedAt: Date.now(),
+      id: editingId
+    });
+    setStatus('saved');
   }, [editingId, quiz]);
 
   const updateQuestion = (idx, field, value) => {

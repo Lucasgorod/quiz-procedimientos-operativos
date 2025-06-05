@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, ChevronRight, AlertCircle } from 'lucide-react';
+import { CheckCircle, ChevronRight } from 'lucide-react';
 import { useSession } from '../hooks/useSession';
 
 const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }) => {
@@ -15,23 +15,12 @@ const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }
   });
   const [submitted, setSubmitted] = useState(false);
   const [showNameForm, setShowNameForm] = useState(true);
-  const [error, setError] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   const { submitResponse } = useSession(quizId, sessionInput);
 
 
   const handleStartQuiz = () => {
-    setError('');
-    if (!studentName.trim()) {
-      setError('Por favor ingresa tu nombre');
-      return;
-    }
-    if (!sessionInput.trim()) {
-      setError('Por favor ingresa el código de sesión');
-      return;
-    }
     if (studentName.trim()) {
       setShowNameForm(false);
     }
@@ -43,34 +32,20 @@ const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }
     'B. Práctica de Trabajo Seguro': 'B'
   };
 
+  // --- Al guardar respuestas, convertir claves peligrosas a seguras ---
   const handleSubmit = async () => {
-    if (!sessionInput) {
-      alert('Por favor ingresa un código de sesión');
-      return;
+    let safeAnswers = { ...answers };
+    if (safeAnswers.q3) {
+      const safeQ3 = {};
+      Object.entries(safeAnswers.q3).forEach(([k, v]) => {
+        const safeKey = matchKeyMap[k] || k;
+        safeQ3[safeKey] = v;
+      });
+      safeAnswers.q3 = safeQ3;
     }
-
-    try {
-      // Sanitizar respuestas para Firebase - CRÍTICO
-      const sanitizeForFirebase = (obj) => {
-        if (typeof obj !== 'object' || obj === null) return obj;
-
-        const sanitized = {};
-        Object.entries(obj).forEach(([key, value]) => {
-          // Firebase no permite . # $ [ ] / en las claves
-          const safeKey = key.replace(/[.#$\[\]/]/g, '_');
-          sanitized[safeKey] =
-            typeof value === 'object' ? sanitizeForFirebase(value) : value;
-        });
-        return sanitized;
-      };
-
-      const safeAnswers = sanitizeForFirebase(answers);
-      await submitResponse(studentName, safeAnswers);
-      setSubmitted(true);
-    } catch (error) {
-      console.error('Error al enviar respuestas:', error);
-      alert('Error al enviar las respuestas. Intenta nuevamente.');
-    }
+    if (!sessionInput) return;
+    await submitResponse(studentName, safeAnswers);
+    setSubmitted(true);
   };
 
   if (showNameForm) {
@@ -81,14 +56,7 @@ const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }
           <h1 className="text-4xl font-semibold text-center mb-8 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
             Unirse al Quiz
           </h1>
-
-          {error && (
-            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-red-500" />
-              <span className="text-sm text-red-500">{error}</span>
-            </div>
-          )}
-
+          
           <div className="bg-gray-900 rounded-3xl p-8">
             <label className="block text-sm text-gray-400 mb-2">Tu nombre</label>
             <input
@@ -233,11 +201,7 @@ const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }
                           onClick={() =>
                             setAnswers({
                               ...answers,
-                              q3: {
-                                ...answers.q3,
-                                [pair.concept.replace(/[.#$\[\]/]/g, '_')]:
-                                  def.id
-                              }
+                              q3: { ...answers.q3, [pair.concept]: def.id }
                             })
                           }
                           className={`px-6 py-2 rounded-full transition-all ${

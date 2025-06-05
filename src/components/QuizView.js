@@ -37,10 +37,7 @@ const QuizView = () => {
           onModeSelect={handleModeSelect}
           quizTitle={quiz.title}
           quizDescription={quiz.description}
-          quizStats={{
-            questions: quiz.questions?.length || 0,
-            id: quizId
-          }}
+          quizStats={{ questions: quiz.questions?.length || 0 }}
         />
       )}
       {mode === 'teacher' && (

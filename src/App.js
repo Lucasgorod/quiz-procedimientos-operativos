@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
 import Landing from './components/Landing';
 import TeacherView from './components/TeacherView';
 import StudentView from './components/StudentView';
 import ResultsView from './components/ResultsView';
-import AdminPanel from './components/AdminPanel';
-import QuizView from './components/QuizView';
 
-function Home() {
+function App() {
   const [mode, setMode] = useState('landing');
   const [sessionCode, setSessionCode] = useState('');
 
@@ -37,22 +34,12 @@ function Home() {
       )}
       {mode === 'student' && <StudentView sessionCode={sessionCode} />}
       {mode === 'results' && (
-        <ResultsView
-          sessionCode={sessionCode}
+        <ResultsView 
+          sessionCode={sessionCode} 
           onBack={() => handleModeSelect('teacher', sessionCode)}
         />
       )}
     </>
-  );
-}
-
-function App() {
-  return (
-    <Routes>
-      <Route path="/admin" element={<AdminPanel />} />
-      <Route path="/quiz/:id" element={<QuizView />} />
-      <Route path="*" element={<Home />} />
-    </Routes>
   );
 }
 

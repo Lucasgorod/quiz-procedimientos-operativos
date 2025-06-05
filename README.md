@@ -29,20 +29,12 @@ npm install
 npm start
 ```
 
- La app estará disponible en http://localhost:3000
+La app estará disponible en http://localhost:3000
 
 ### Despliegue
 
 - Puedes desplegar en Netlify, Vercel o cualquier hosting estático.
 - Recuerda configurar las variables de entorno en el panel del hosting.
-
-## 🛠 Panel de Administración
-
-1. Accede a `/admin` e inicia sesión con Google.
-2. Podrás ver la lista de quizzes guardados en la base de datos.
-3. Usa **Nuevo Quiz** para crear uno o **Editar** para modificar un existente.
-4. Completa el título, un slug opcional y las preguntas. Marca las respuestas correctas con `*` al inicio de la línea.
-5. Al guardar se mostrará la URL resultante (`/quiz/<quizId>`). Comparte esa dirección con tus estudiantes.
 
 ---
 

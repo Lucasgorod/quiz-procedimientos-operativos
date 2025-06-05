@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, ChevronRight } from 'lucide-react';
-import { questions } from '../utils/questions';
 import { useSession } from '../hooks/useSession';
 
-const StudentView = ({ sessionCode: initialSessionCode }) => {
+const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }) => {
   const [studentName, setStudentName] = useState('');
   const [sessionInput, setSessionInput] = useState(initialSessionCode || '');
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -17,7 +16,7 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
   const [submitted, setSubmitted] = useState(false);
   const [showNameForm, setShowNameForm] = useState(true);
 
-  const { submitResponse } = useSession(sessionInput);
+  const { submitResponse } = useSession(quizId, sessionInput);
 
   const handleStartQuiz = () => {
     if (studentName.trim()) {

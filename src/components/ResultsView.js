@@ -1,11 +1,11 @@
 import React from 'react';
 import { Users } from 'lucide-react';
 import { useSession } from '../hooks/useSession';
-import { QUIZ_ID } from '../utils/constants';
 
 
-const ResultsView = ({ sessionCode, onBack }) => {
-  const { responses } = useSession(QUIZ_ID, sessionCode);
+
+const ResultsView = ({ sessionCode, quizId, onBack, questions = [] }) => {
+  const { responses } = useSession(quizId, sessionCode);
 
 
   // Calcular estadísticas

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Users, Eye } from 'lucide-react';
 import QRGenerator from './QRGenerator';
 import { useSession } from '../hooks/useSession';
+import { QUIZ_ID } from '../utils/constants';
 
 const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
   const [sessionCode, setSessionCode] = useState(initialSessionCode || '');
-  const { responses, createSession, clearSession } = useSession(sessionCode);
+  const { responses, createSession, clearSession } = useSession(QUIZ_ID, sessionCode);
 
   const handleReset = async () => {
     await clearSession();

@@ -2,9 +2,10 @@ import React from 'react';
 import { Users } from 'lucide-react';
 import { questions } from '../utils/questions';
 import { useSession } from '../hooks/useSession';
+import { QUIZ_ID } from '../utils/constants';
 
 const ResultsView = ({ sessionCode, onBack }) => {
-  const { responses } = useSession(sessionCode);
+  const { responses } = useSession(QUIZ_ID, sessionCode);
 
   // Calcular estadísticas
   const calculateStats = () => {

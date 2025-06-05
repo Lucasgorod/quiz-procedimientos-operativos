@@ -1,18 +1,23 @@
 import React from 'react';
 import { Play, Users } from 'lucide-react';
 
-const Landing = ({ onModeSelect }) => {
+const Landing = ({ onModeSelect, quizTitle, quizDescription, quizStats }) => {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="max-w-4xl w-full text-center">
         <img src="/assets/itba-logo.png" alt="ITBA" className="w-56 md:w-72 mx-auto mb-8" />
         <h1 className="text-6xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-          Quiz Interactivo
+          {quizTitle || 'Quiz Interactivo'}
         </h1>
         <p className="text-2xl text-gray-400 mb-12">
-          Procedimientos Operativos - Clase 11
+          {quizDescription || 'Bienvenido al quiz'}
         </p>
+        {quizStats && (
+          <p className="text-gray-500 mb-8 text-sm">{quizStats.questions} preguntas</p>
+        )}
         
+        <div className="text-gray-500 text-sm mb-4">ID: {quizStats?.id}</div>
+        <a href="/" className="text-blue-500 underline text-sm">Volver a seleccionar quiz</a>
         <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
           <button
             onClick={() => onModeSelect('teacher')}

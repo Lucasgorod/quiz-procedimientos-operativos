@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ref, set, onValue, push, remove } from 'firebase/database';
+import { ref, set, onValue, push, remove, get, update } from 'firebase/database';
 import { database } from '../config/firebase';
 
 export const useSession = (quizId, sessionCode) => {
@@ -8,7 +8,7 @@ export const useSession = (quizId, sessionCode) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!sessionCode || !database) {
+    if (!sessionCode || !database || !quizId) {
       setLoading(false);
       return;
     }
@@ -18,7 +18,6 @@ export const useSession = (quizId, sessionCode) => {
       const data = snapshot.val();
       if (data) {
         setSession(data);
-        // Ordenar respuestas por fecha de envío (opcional, pero útil)
         const responsesArr = data.responses ? Object.values(data.responses) : [];
         responsesArr.sort((a, b) => (a.submittedAt || 0) - (b.submittedAt || 0));
         setResponses(responsesArr);
@@ -65,5 +64,32 @@ export const useSession = (quizId, sessionCode) => {
     await remove(sessionRef);
   };
 
-  return { session, responses, loading, createSession, submitResponse, clearSession };
+  const duplicateSession = async (newCode) => {
+    if (!database || !sessionCode) return null;
+    const srcRef = ref(database, `sessions/${quizId}/${sessionCode}`);
+    const snapshot = await get(srcRef);
+    if (!snapshot.exists()) return null;
+    const data = snapshot.val();
+    const targetCode = newCode || Math.random().toString(36).substring(2, 8).toUpperCase();
+    const targetRef = ref(database, `sessions/${quizId}/${targetCode}`);
+    await set(targetRef, { ...data, code: targetCode, createdAt: Date.now() });
+    return targetCode;
+  };
+
+  const archiveSession = async () => {
+    if (!database || !sessionCode) return;
+    const sessionRef = ref(database, `sessions/${quizId}/${sessionCode}`);
+    await update(sessionRef, { status: 'archived', archivedAt: Date.now() });
+  };
+
+  return {
+    session,
+    responses,
+    loading,
+    createSession,
+    submitResponse,
+    clearSession,
+    duplicateSession,
+    archiveSession
+  };
 };

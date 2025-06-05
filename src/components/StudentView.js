@@ -43,6 +43,7 @@ const StudentView = ({ quizId, sessionCode: initialSessionCode, questions = [] }
       });
       safeAnswers.q3 = safeQ3;
     }
+    if (!sessionInput) return;
     await submitResponse(studentName, safeAnswers);
     setSubmitted(true);
   };

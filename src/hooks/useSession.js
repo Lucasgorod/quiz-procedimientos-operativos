@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ref, set, onValue, push, remove } from 'firebase/database';
 import { database } from '../config/firebase';
 
-export const useSession = (sessionCode) => {
+export const useSession = (quizId, sessionCode) => {
   const [session, setSession] = useState(null);
   const [responses, setResponses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +13,7 @@ export const useSession = (sessionCode) => {
       return;
     }
 
-    const sessionRef = ref(database, `sessions/${sessionCode}`);
+    const sessionRef = ref(database, `sessions/${quizId}/${sessionCode}`);
     const unsubscribe = onValue(sessionRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -30,13 +30,13 @@ export const useSession = (sessionCode) => {
     });
 
     return () => unsubscribe();
-  }, [sessionCode]);
+  }, [quizId, sessionCode]);
 
   const createSession = async () => {
     const code = Math.random().toString(36).substring(2, 8).toUpperCase();
     
     if (database) {
-      const sessionRef = ref(database, `sessions/${code}`);
+      const sessionRef = ref(database, `sessions/${quizId}/${code}`);
       await set(sessionRef, {
         code,
         createdAt: Date.now(),
@@ -51,7 +51,7 @@ export const useSession = (sessionCode) => {
   const submitResponse = async (studentName, answers) => {
     if (!database) return;
 
-    const responsesRef = ref(database, `sessions/${sessionCode}/responses`);
+    const responsesRef = ref(database, `sessions/${quizId}/${sessionCode}/responses`);
     await push(responsesRef, {
       studentName,
       answers,
@@ -61,7 +61,7 @@ export const useSession = (sessionCode) => {
 
   const clearSession = async () => {
     if (!database || !sessionCode) return;
-    const sessionRef = ref(database, `sessions/${sessionCode}`);
+    const sessionRef = ref(database, `sessions/${quizId}/${sessionCode}`);
     await remove(sessionRef);
   };
 

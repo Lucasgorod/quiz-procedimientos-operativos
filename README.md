@@ -22,7 +22,6 @@ npm install
 3. Configurar Firebase:
 - Crear un proyecto en Firebase
 - Crear una base de datos Realtime Database
-- Habilitar el proveedor de Google en el apartado **Authentication**
 - Copiar la configuración en un archivo `.env` basado en `.env.example`
 
 4. Iniciar la app:

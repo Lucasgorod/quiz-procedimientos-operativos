@@ -4,7 +4,7 @@ import QRGenerator from './QRGenerator';
 import { useSession } from '../hooks/useSession';
 
 
-const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode, quizId }) => {
+const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode, quizId, quiz }) => {
 
   const [sessionCode, setSessionCode] = useState(initialSessionCode || '');
   const { responses, createSession, clearSession } = useSession(quizId, sessionCode);
@@ -36,8 +36,19 @@ const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode, quizId }) 
       <div className="max-w-4xl mx-auto text-center">
         <img src="/assets/itba-logo.png" alt="ITBA" className="w-36 mx-auto mb-6" />
         <h1 className="text-5xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-          Sesión Iniciada
+          {quiz?.title || 'Sesión Iniciada'}
         </h1>
+        {quiz?.description && <p className="text-gray-400 mb-4">{quiz.description}</p>}
+        {quiz?.questions && (
+          <div className="bg-gray-900 rounded-3xl p-4 mb-6 text-left">
+            <h2 className="text-lg font-medium mb-2">Preguntas ({quiz.questions.length})</h2>
+            <ul className="list-disc list-inside text-sm text-gray-400 space-y-1">
+              {quiz.questions.map((q) => (
+                <li key={q.id}>{q.title}</li>
+              ))}
+            </ul>
+          </div>
+        )}
         
         <div className="bg-gray-900 rounded-3xl p-8 mb-6">
           <p className="text-xl text-gray-400 mb-6">

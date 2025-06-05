@@ -8,7 +8,7 @@ import { useQuizData } from '../hooks/useQuizData';
 
 const QuizView = () => {
   const { quizId } = useParams();
-  const { quiz, loading } = useQuizData(quizId);
+  const { quiz, loading, error } = useQuizData(quizId);
   const [mode, setMode] = useState('landing');
   const [sessionCode, setSessionCode] = useState('');
 
@@ -27,22 +27,40 @@ const QuizView = () => {
   };
 
   if (loading) return <p className="p-4">Cargando...</p>;
+  if (error) return <p className="p-4">Ocurrió un error al cargar el quiz</p>;
   if (!quiz) return <p className="p-4">Quiz no encontrado</p>;
 
   return (
     <>
-      {mode === 'landing' && <Landing onModeSelect={handleModeSelect} />}
+      {mode === 'landing' && (
+        <Landing
+          onModeSelect={handleModeSelect}
+          quizTitle={quiz.title}
+          quizDescription={quiz.description}
+          quizStats={{ questions: quiz.questions?.length || 0 }}
+        />
+      )}
       {mode === 'teacher' && (
-        <TeacherView onModeSelect={handleModeSelect} sessionCode={sessionCode} quizId={quizId} />
+        <TeacherView
+          onModeSelect={handleModeSelect}
+          sessionCode={sessionCode}
+          quizId={quizId}
+          quiz={quiz}
+        />
       )}
       {mode === 'student' && (
-        <StudentView sessionCode={sessionCode} quizId={quizId} questions={quiz.questions || []} />
+        <StudentView
+          sessionCode={sessionCode}
+          quizId={quizId}
+          questions={quiz.questions || []}
+        />
       )}
       {mode === 'results' && (
         <ResultsView
           sessionCode={sessionCode}
           quizId={quizId}
           questions={quiz.questions || []}
+          quiz={quiz}
           onBack={() => handleModeSelect('teacher', sessionCode)}
         />
       )}

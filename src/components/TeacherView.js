@@ -3,9 +3,9 @@ import { Users, Eye } from 'lucide-react';
 import QRGenerator from './QRGenerator';
 import { useSession } from '../hooks/useSession';
 
-const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
+const TeacherView = ({ quizId, onModeSelect, sessionCode: initialSessionCode }) => {
   const [sessionCode, setSessionCode] = useState(initialSessionCode || '');
-  const { responses, createSession, clearSession } = useSession(sessionCode);
+  const { responses, createSession, clearSession } = useSession(quizId, sessionCode);
 
   const handleReset = async () => {
     await clearSession();
@@ -41,7 +41,7 @@ const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
             Los estudiantes pueden unirse escaneando el código QR
           </p>
           
-          <QRGenerator sessionCode={sessionCode} />
+          <QRGenerator quizId={quizId} sessionCode={sessionCode} />
           
           <div className="mt-6 mb-6">
             <p className="text-gray-400 mb-2">O ingresando el código:</p>

@@ -4,9 +4,10 @@ import QRGenerator from './QRGenerator';
 import { useSession } from '../hooks/useSession';
 import { QUIZ_ID } from '../utils/constants';
 
-const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
+const TeacherView = ({ quizId, onModeSelect, sessionCode: initialSessionCode }) => {
   const [sessionCode, setSessionCode] = useState(initialSessionCode || '');
   const { responses, createSession, clearSession } = useSession(QUIZ_ID, sessionCode);
+
 
   const handleReset = async () => {
     await clearSession();
@@ -42,7 +43,7 @@ const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
             Los estudiantes pueden unirse escaneando el código QR
           </p>
           
-          <QRGenerator sessionCode={sessionCode} />
+          <QRGenerator quizId={quizId} sessionCode={sessionCode} />
           
           <div className="mt-6 mb-6">
             <p className="text-gray-400 mb-2">O ingresando el código:</p>

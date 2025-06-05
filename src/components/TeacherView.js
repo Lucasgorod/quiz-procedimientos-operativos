@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Users, Eye } from 'lucide-react';
 import QRGenerator from './QRGenerator';
 import { useSession } from '../hooks/useSession';
-import LogoutButton from './auth/LogoutButton';
 
 const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
   const [sessionCode, setSessionCode] = useState(initialSessionCode || '');
@@ -31,10 +30,7 @@ const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
 
   return (
     <div className="min-h-screen bg-black text-white p-4">
-      <div className="max-w-4xl mx-auto text-center relative">
-        <div className="absolute top-4 right-4">
-          <LogoutButton />
-        </div>
+      <div className="max-w-4xl mx-auto text-center">
         <img src="/assets/itba-logo.png" alt="ITBA" className="w-36 mx-auto mb-6" />
         <h1 className="text-5xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
           Sesión Iniciada

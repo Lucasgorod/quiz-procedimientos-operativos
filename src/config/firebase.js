@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -14,12 +13,10 @@ const firebaseConfig = {
 
 // Initialize Firebase only if config is provided
 let database = null;
-let auth = null;
 
 if (firebaseConfig.apiKey) {
   const app = initializeApp(firebaseConfig);
   database = getDatabase(app);
-  auth = getAuth(app);
 }
 
-export { database, auth };
+export { database };

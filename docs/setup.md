@@ -31,9 +31,6 @@ npm install
 
 - Copiar configuración desde Project Settings
 - Crear archivo .env basado en .env.example
-- En el apartado "Authentication", habilitar el proveedor de Google
-- En la base de datos crear un nodo `admins` y agregar el UID del usuario que
-  tendrá permisos de administrador
 
 ## 3. Desarrollo Local
 ```bash

@@ -11,8 +11,15 @@ import QuizView from './components/QuizView';
 function Home() {
   const [mode, setMode] = useState('landing');
   const [sessionCode, setSessionCode] = useState('');
+  const [quizId, setQuizId] = useState('');
 
   useEffect(() => {
+    // Extract quiz id from path if present
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    if (parts[0] === 'quiz' && parts[1]) {
+      setQuizId(parts[1]);
+    }
+
     // Check if there's a session code in the URL
     const urlParams = new URLSearchParams(window.location.search);
     const sessionFromUrl = urlParams.get('session');
@@ -34,6 +41,7 @@ function Home() {
         <TeacherView
           onModeSelect={handleModeSelect}
           sessionCode={sessionCode}
+          quizId={quizId}
         />
       )}
       {mode === 'student' && <StudentView sessionCode={sessionCode} />}

@@ -56,7 +56,9 @@ const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode, quizId, qu
           </p>
           
 
-          <QRGenerator sessionCode={sessionCode} quizId={quizId} />
+          <div className="max-w-sm mx-auto mb-6">
+            <QRGenerator sessionCode={sessionCode} quizId={quizId} />
+          </div>
 
           
           <div className="mt-6 mb-6">

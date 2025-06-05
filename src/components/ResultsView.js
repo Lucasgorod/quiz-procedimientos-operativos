@@ -66,6 +66,7 @@ const ResultsView = ({ sessionCode, onBack }) => {
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-6xl mx-auto">
+        <img src="/assets/itba-logo.png" alt="ITBA" className="w-24 mx-auto mb-6" />
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-semibold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
@@ -170,7 +171,7 @@ const ResultsView = ({ sessionCode, onBack }) => {
               {stats.q4.length > 0 ? (
                 stats.q4.slice(0, 5).map((answer, idx) => (
                   <div key={idx} className="text-sm text-gray-300 p-2 bg-gray-800 rounded">
-                    "{answer}"
+                    {answer}
                   </div>
                 ))
               ) : (

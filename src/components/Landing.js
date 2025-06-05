@@ -5,6 +5,7 @@ const Landing = ({ onModeSelect }) => {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="max-w-4xl w-full text-center">
+        <img src="/assets/itba-logo.png" alt="ITBA" className="w-48 md:w-64 mx-auto mb-8" />
         <h1 className="text-6xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
           Quiz Interactivo
         </h1>

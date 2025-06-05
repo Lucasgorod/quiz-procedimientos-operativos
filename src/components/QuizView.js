@@ -1,33 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { ref, onValue } from 'firebase/database';
-import { database } from '../config/firebase';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Landing from './Landing';
+import TeacherView from './TeacherView';
+import StudentView from './StudentView';
+import ResultsView from './ResultsView';
+import { useQuizData } from '../hooks/useQuizData';
 
 const QuizView = () => {
-  const { id } = useParams();
-  const [quiz, setQuiz] = useState(null);
+  const { quizId } = useParams();
+  const { quiz, loading } = useQuizData(quizId);
+  const [mode, setMode] = useState('landing');
+  const [sessionCode, setSessionCode] = useState('');
 
   useEffect(() => {
-    if (!database) return;
-    const qRef = ref(database, `quizzes/${id}`);
-    const unsub = onValue(qRef, snap => {
-      setQuiz(snap.val());
-    });
-    return () => unsub();
-  }, [id]);
+    const params = new URLSearchParams(window.location.search);
+    const sessionFromUrl = params.get('session');
+    if (sessionFromUrl) {
+      setSessionCode(sessionFromUrl);
+      setMode('student');
+    }
+  }, []);
 
-  if (!quiz) return <p className="p-4">Cargando...</p>;
+  const handleModeSelect = (m, code = '') => {
+    setMode(m);
+    if (code) setSessionCode(code);
+  };
+
+  if (loading) return <p className="p-4">Cargando...</p>;
+  if (!quiz) return <p className="p-4">Quiz no encontrado</p>;
 
   return (
-    <div className="p-4 max-w-3xl mx-auto space-y-4">
-      <h1 className="text-2xl font-bold">{quiz.title}</h1>
-      {quiz.questions && quiz.questions.map((q,idx)=>(
-        <div key={idx} className="border p-2 rounded">
-          <p className="font-medium">{q.title}</p>
-          <p className="text-sm text-gray-600">{q.subtitle}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      {mode === 'landing' && <Landing onModeSelect={handleModeSelect} />}
+      {mode === 'teacher' && (
+        <TeacherView onModeSelect={handleModeSelect} sessionCode={sessionCode} quizId={quizId} />
+      )}
+      {mode === 'student' && (
+        <StudentView sessionCode={sessionCode} quizId={quizId} questions={quiz.questions || []} />
+      )}
+      {mode === 'results' && (
+        <ResultsView
+          sessionCode={sessionCode}
+          quizId={quizId}
+          questions={quiz.questions || []}
+          onBack={() => handleModeSelect('teacher', sessionCode)}
+        />
+      )}
+    </>
   );
 };
 

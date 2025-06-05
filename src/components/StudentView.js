@@ -30,11 +30,6 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
     'A. Procedimiento Operativo': 'A',
     'B. Práctica de Trabajo Seguro': 'B'
   };
-  const matchKeyReverseMap = {
-    'A': 'A. Procedimiento Operativo',
-    'B': 'B. Práctica de Trabajo Seguro'
-  };
-
   // --- Al guardar respuestas, convertir claves peligrosas a seguras ---
   const handleSubmit = async () => {
     let safeAnswers = { ...answers };

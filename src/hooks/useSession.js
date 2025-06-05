@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ref, set, onValue, push } from 'firebase/database';
+import { ref, set, onValue, push, remove } from 'firebase/database';
 import { database } from '../config/firebase';
 
 export const useSession = (sessionCode) => {
@@ -50,7 +50,7 @@ export const useSession = (sessionCode) => {
 
   const submitResponse = async (studentName, answers) => {
     if (!database) return;
-    
+
     const responsesRef = ref(database, `sessions/${sessionCode}/responses`);
     await push(responsesRef, {
       studentName,
@@ -59,5 +59,11 @@ export const useSession = (sessionCode) => {
     });
   };
 
-  return { session, responses, loading, createSession, submitResponse };
+  const clearSession = async () => {
+    if (!database || !sessionCode) return;
+    const sessionRef = ref(database, `sessions/${sessionCode}`);
+    await remove(sessionRef);
+  };
+
+  return { session, responses, loading, createSession, submitResponse, clearSession };
 };

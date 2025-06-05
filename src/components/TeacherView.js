@@ -3,21 +3,35 @@ import { Users, Eye } from 'lucide-react';
 import QRGenerator from './QRGenerator';
 import { useSession } from '../hooks/useSession';
 
-const TeacherView = ({ onModeSelect }) => {
-  const [sessionCode, setSessionCode] = useState('');
-  const { responses, createSession } = useSession(sessionCode);
+const TeacherView = ({ onModeSelect, sessionCode: initialSessionCode }) => {
+  const [sessionCode, setSessionCode] = useState(initialSessionCode || '');
+  const { responses, createSession, clearSession } = useSession(sessionCode);
+
+  const handleReset = async () => {
+    await clearSession();
+    const newCode = await createSession();
+    setSessionCode(newCode);
+    onModeSelect('teacher', newCode);
+  };
 
   useEffect(() => {
     const initSession = async () => {
-      const code = await createSession();
-      setSessionCode(code);
+      if (!initialSessionCode) {
+        const code = await createSession();
+        setSessionCode(code);
+        // notify parent so the session code persists across views
+        onModeSelect('teacher', code);
+      } else {
+        setSessionCode(initialSessionCode);
+      }
     };
     initSession();
-  }, []);
+  }, [initialSessionCode]);
 
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-4xl mx-auto text-center">
+        <img src="/assets/itba-logo.png" alt="ITBA" className="w-28 mx-auto mb-6" />
         <h1 className="text-5xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
           Sesión Iniciada
         </h1>
@@ -48,7 +62,14 @@ const TeacherView = ({ onModeSelect }) => {
             <Eye className="w-5 h-5" />
             Ver Resultados en Tiempo Real
           </button>
-          
+
+          <button
+            onClick={handleReset}
+            className="px-8 py-3 bg-red-600 rounded-full font-medium hover:bg-red-500 transition-all"
+          >
+            Limpiar Resultados y Reiniciar
+          </button>
+
           <button
             onClick={() => onModeSelect('landing')}
             className="px-8 py-3 bg-gray-800 rounded-full font-medium hover:bg-gray-700 transition-all"

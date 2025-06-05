@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import { QrCode } from 'lucide-react';
 
-const QRGenerator = ({ sessionCode }) => {
+const QRGenerator = ({ sessionCode, quizId }) => {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   useEffect(() => {
     const generateQR = async () => {
-      const url = `${window.location.origin}?session=${sessionCode}`;
+      const base = quizId
+        ? `${window.location.origin}/quiz/${quizId}`
+        : `${window.location.origin}`;
+      const url = `${base}?session=${sessionCode}`;
       try {
         const qrUrl = await QRCode.toDataURL(url, {
           width: 300,
@@ -26,7 +29,7 @@ const QRGenerator = ({ sessionCode }) => {
     if (sessionCode) {
       generateQR();
     }
-  }, [sessionCode]);
+  }, [sessionCode, quizId]);
 
   return (
     <div className="bg-gray-800 rounded-2xl p-8 mx-auto max-w-sm">

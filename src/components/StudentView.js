@@ -26,24 +26,8 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
     }
   };
 
-  // --- Utilidades para mapear claves seguras para Firebase ---
-  const matchKeyMap = {
-    'A. Procedimiento Operativo': 'A',
-    'B. Práctica de Trabajo Seguro': 'B'
-  };
-
-  // --- Al guardar respuestas, convertir claves peligrosas a seguras ---
   const handleSubmit = async () => {
-    let safeAnswers = { ...answers };
-    if (safeAnswers.q3) {
-      const safeQ3 = {};
-      Object.entries(safeAnswers.q3).forEach(([k, v]) => {
-        const safeKey = matchKeyMap[k] || k;
-        safeQ3[safeKey] = v;
-      });
-      safeAnswers.q3 = safeQ3;
-    }
-    await submitResponse(studentName, safeAnswers);
+    await submitResponse(studentName, answers);
     setSubmitted(true);
   };
 
@@ -166,9 +150,9 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
               {question.options.map(opt => (
                 <button
                   key={opt.id}
-                  onClick={() => setAnswers({ ...answers, q2: opt.id })}
+                  onClick={() => setAnswers({ ...answers, [question.id]: opt.id })}
                   className={`w-full text-left p-4 rounded-2xl transition-all ${
-                    answers.q2 === opt.id
+                    answers[question.id] === opt.id
                       ? 'bg-blue-500 text-white'
                       : 'bg-gray-800 hover:bg-gray-700'
                   }`}

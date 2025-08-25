@@ -8,22 +8,19 @@ const ResultsView = ({ sessionCode, onBack }) => {
 
   // Calcular estadísticas
   const calculateStats = () => {
-    const matchKeyReverseMap = {
-      'A': 'A. Procedimiento Operativo',
-      'B': 'B. Práctica de Trabajo Seguro'
-    };
     const stats = {
       q1: { a: { true: 0, false: 0 }, b: { true: 0, false: 0 }, c: { true: 0, false: 0 }, d: { true: 0, false: 0 } },
       q2: { A: 0, B: 0, C: 0, D: 0 },
-      q3: { correct: 0, incorrect: 0 },
-      q4: [],
-      q5: { blank1: {}, blank2: {} }
+      q3: { A: 0, B: 0, C: 0, D: 0 },
+      q4: { A: 0, B: 0, C: 0, D: 0 },
+      q5: { A: 0, B: 0, C: 0, D: 0 },
+      q6: { A: 0, B: 0, C: 0, D: 0 }
     };
 
     responses.forEach(response => {
       const { answers } = response;
       
-      // Q1
+      // Q1 - Verdadero/Falso
       if (answers.q1) {
         Object.keys(answers.q1).forEach(key => {
           if (answers.q1[key] === true) stats.q1[key].true++;
@@ -31,30 +28,12 @@ const ResultsView = ({ sessionCode, onBack }) => {
         });
       }
 
-      // Q2
+      // Q2-Q6 - Opción múltiple
       if (answers.q2) stats.q2[answers.q2]++;
-
-      // Q3
-      if (answers.q3) {
-        // Mapear claves seguras a los textos originales para comparar
-        const a = answers.q3['A'] || answers.q3['A. Procedimiento Operativo'];
-        const b = answers.q3['B'] || answers.q3['B. Práctica de Trabajo Seguro'];
-        const correctQ3 = a === '2' && b === '1';
-        if (correctQ3) stats.q3.correct++;
-        else stats.q3.incorrect++;
-      }
-      // Q4
-      if (answers.q4) stats.q4.push(answers.q4);
-
-      // Q5
-      if (answers.q5) {
-        if (answers.q5.blank1) {
-          stats.q5.blank1[answers.q5.blank1] = (stats.q5.blank1[answers.q5.blank1] || 0) + 1;
-        }
-        if (answers.q5.blank2) {
-          stats.q5.blank2[answers.q5.blank2] = (stats.q5.blank2[answers.q5.blank2] || 0) + 1;
-        }
-      }
+      if (answers.q3) stats.q3[answers.q3]++;
+      if (answers.q4) stats.q4[answers.q4]++;
+      if (answers.q5) stats.q5[answers.q5]++;
+      if (answers.q6) stats.q6[answers.q6]++;
     });
 
     return stats;
@@ -84,10 +63,11 @@ const ResultsView = ({ sessionCode, onBack }) => {
           </button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Pregunta 1 */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Pregunta 1: Verdadero/Falso */}
           <div className="bg-gray-900 rounded-3xl p-6">
-            <h3 className="text-xl font-medium mb-4">Pregunta 1: Verdadero o Falso</h3>
+            <h3 className="text-lg font-medium mb-4">P1: Verdadero/Falso</h3>
+            <p className="text-xs text-gray-500 mb-4">{questions[0].subtitle}</p>
             {questions[0].options.map(opt => {
               const truePerc = total > 0 ? Math.round((stats.q1[opt.id].true / total) * 100) : 0;
               const falsePerc = total > 0 ? Math.round((stats.q1[opt.id].false / total) * 100) : 0;
@@ -95,11 +75,11 @@ const ResultsView = ({ sessionCode, onBack }) => {
               return (
                 <div key={opt.id} className="mb-4">
                   <p className="text-sm text-gray-400 mb-2">
-                    {opt.id}) {opt.correct ? '✓ Correcto: V' : '✗ Correcto: F'}
+                    {opt.id.toUpperCase()}) {opt.correct ? '✓ Correcto: V' : '✗ Correcto: F'}
                   </p>
                   <div className="flex gap-2">
                     <div className="flex-1">
-                      <div className="bg-gray-800 rounded-full h-6 overflow-hidden">
+                      <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
                         <div 
                           className="h-full bg-green-500 transition-all duration-500"
                           style={{ width: `${truePerc}%` }}
@@ -108,7 +88,7 @@ const ResultsView = ({ sessionCode, onBack }) => {
                       <p className="text-xs text-gray-500 mt-1">V: {truePerc}%</p>
                     </div>
                     <div className="flex-1">
-                      <div className="bg-gray-800 rounded-full h-6 overflow-hidden">
+                      <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
                         <div 
                           className="h-full bg-red-500 transition-all duration-500"
                           style={{ width: `${falsePerc}%` }}
@@ -122,19 +102,20 @@ const ResultsView = ({ sessionCode, onBack }) => {
             })}
           </div>
 
-          {/* Pregunta 2 */}
+          {/* Pregunta 2: Estándares ESG */}
           <div className="bg-gray-900 rounded-3xl p-6">
-            <h3 className="text-xl font-medium mb-4">Pregunta 2: Opción Múltiple</h3>
+            <h3 className="text-lg font-medium mb-4">P2: Estándares ESG</h3>
+            <p className="text-xs text-gray-500 mb-4">{questions[1].subtitle}</p>
             {questions[1].options.map(opt => {
-              const perc = total > 0 ? Math.round((stats.q2[opt.id] / total) * 100) : 0;
+              const perc = total > 0 ? Math.round(((stats.q2[opt.id] || 0) / total) * 100) : 0;
               
               return (
                 <div key={opt.id} className="mb-3">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm">{opt.id}. {opt.correct && '✓'}</span>
+                    <span className="text-sm">{opt.id}. {opt.text.substring(0, 20)}... {opt.correct && '✓'}</span>
                     <span className="text-sm text-gray-400">{perc}%</span>
                   </div>
-                  <div className="bg-gray-800 rounded-full h-6 overflow-hidden">
+                  <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
                     <div 
                       className={`h-full ${opt.correct ? 'bg-green-500' : 'bg-blue-500'} transition-all duration-500`}
                       style={{ width: `${perc}%` }}
@@ -145,72 +126,100 @@ const ResultsView = ({ sessionCode, onBack }) => {
             })}
           </div>
 
-          {/* Pregunta 3 */}
+          {/* Pregunta 3: Eventos PSM */}
           <div className="bg-gray-900 rounded-3xl p-6">
-            <h3 className="text-xl font-medium mb-4">Pregunta 3: Relacionar Columnas</h3>
-            <div className="flex items-center justify-center gap-8">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-green-500">
-                  {total > 0 ? Math.round((stats.q3.correct / total) * 100) : 0}%
-                </div>
-                <p className="text-gray-400 mt-2">Correctas</p>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-red-500">
-                  {total > 0 ? Math.round((stats.q3.incorrect / total) * 100) : 0}%
-                </div>
-                <p className="text-gray-400 mt-2">Incorrectas</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Pregunta 4 */}
-          <div className="bg-gray-900 rounded-3xl p-6">
-            <h3 className="text-xl font-medium mb-4">Pregunta 4: Algunas Respuestas</h3>
-            <div className="space-y-2 max-h-48 overflow-y-auto">
-              {stats.q4.length > 0 ? (
-                stats.q4.slice(0, 5).map((answer, idx) => (
-                  <div key={idx} className="text-sm text-gray-300 p-2 bg-gray-800 rounded">
-                    {answer}
+            <h3 className="text-lg font-medium mb-4">P3: Eventos PSM</h3>
+            <p className="text-xs text-gray-500 mb-4">{questions[2].subtitle}</p>
+            {questions[2].options.map(opt => {
+              const perc = total > 0 ? Math.round(((stats.q3[opt.id] || 0) / total) * 100) : 0;
+              
+              return (
+                <div key={opt.id} className="mb-3">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm">{opt.id}. {opt.text} {opt.correct && '✓'}</span>
+                    <span className="text-sm text-gray-400">{perc}%</span>
                   </div>
-                ))
-              ) : (
-                <p className="text-gray-500">No hay respuestas aún</p>
-              )}
-            </div>
+                  <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
+                    <div 
+                      className={`h-full ${opt.correct ? 'bg-green-500' : 'bg-blue-500'} transition-all duration-500`}
+                      style={{ width: `${perc}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Pregunta 5 */}
-          <div className="bg-gray-900 rounded-3xl p-6 md:col-span-2">
-            <h3 className="text-xl font-medium mb-4">Pregunta 5: Palabras Más Usadas</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-400 mb-2">Primer espacio:</p>
-                {Object.keys(stats.q5.blank1).length > 0 ? (
-                  Object.entries(stats.q5.blank1).map(([word, count]) => (
-                    <div key={word} className="flex justify-between text-sm mb-1">
-                      <span>{word}</span>
-                      <span className="text-gray-400">{count} estudiantes</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-sm">No hay respuestas aún</p>
-                )}
-              </div>
-              <div>
-                <p className="text-sm text-gray-400 mb-2">Segundo espacio:</p>
-                {Object.keys(stats.q5.blank2).length > 0 ? (
-                  Object.entries(stats.q5.blank2).map(([word, count]) => (
-                    <div key={word} className="flex justify-between text-sm mb-1">
-                      <span>{word}</span>
-                      <span className="text-gray-400">{count} estudiantes</span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-500 text-sm">No hay respuestas aún</p>
-                )}
-              </div>
-            </div>
+          {/* Pregunta 4: ODS */}
+          <div className="bg-gray-900 rounded-3xl p-6">
+            <h3 className="text-lg font-medium mb-4">P4: ODS</h3>
+            <p className="text-xs text-gray-500 mb-4">{questions[3].subtitle}</p>
+            {questions[3].options.map(opt => {
+              const perc = total > 0 ? Math.round(((stats.q4[opt.id] || 0) / total) * 100) : 0;
+              
+              return (
+                <div key={opt.id} className="mb-3">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm">{opt.id}. {opt.text} {opt.correct && '✓'}</span>
+                    <span className="text-sm text-gray-400">{perc}%</span>
+                  </div>
+                  <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
+                    <div 
+                      className={`h-full ${opt.correct ? 'bg-green-500' : 'bg-blue-500'} transition-all duration-500`}
+                      style={{ width: `${perc}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Pregunta 5: Integración Estratégica */}
+          <div className="bg-gray-900 rounded-3xl p-6">
+            <h3 className="text-lg font-medium mb-4">P5: Integración</h3>
+            <p className="text-xs text-gray-500 mb-4">{questions[4].subtitle}</p>
+            {questions[4].options.map(opt => {
+              const perc = total > 0 ? Math.round(((stats.q5[opt.id] || 0) / total) * 100) : 0;
+              
+              return (
+                <div key={opt.id} className="mb-3">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm">{opt.id}. {opt.text.substring(0, 20)}... {opt.correct && '✓'}</span>
+                    <span className="text-sm text-gray-400">{perc}%</span>
+                  </div>
+                  <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
+                    <div 
+                      className={`h-full ${opt.correct ? 'bg-green-500' : 'bg-blue-500'} transition-all duration-500`}
+                      style={{ width: `${perc}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Pregunta 6: Oportunidades PSM */}
+          <div className="bg-gray-900 rounded-3xl p-6">
+            <h3 className="text-lg font-medium mb-4">P6: Oportunidades</h3>
+            <p className="text-xs text-gray-500 mb-4">{questions[5].subtitle}</p>
+            {questions[5].options.map(opt => {
+              const perc = total > 0 ? Math.round(((stats.q6[opt.id] || 0) / total) * 100) : 0;
+              
+              return (
+                <div key={opt.id} className="mb-3">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm">{opt.id}. {opt.text.substring(0, 20)}... {opt.correct && '✓'}</span>
+                    <span className="text-sm text-gray-400">{perc}%</span>
+                  </div>
+                  <div className="bg-gray-800 rounded-full h-4 overflow-hidden">
+                    <div 
+                      className={`h-full ${opt.correct ? 'bg-green-500' : 'bg-blue-500'} transition-all duration-500`}
+                      style={{ width: `${perc}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

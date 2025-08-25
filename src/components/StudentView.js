@@ -10,9 +10,10 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
   const [answers, setAnswers] = useState({
     q1: {},
     q2: '',
-    q3: {},
+    q3: '',
     q4: '',
-    q5: { blank1: '', blank2: '' }
+    q5: '',
+    q6: ''
   });
   const [submitted, setSubmitted] = useState(false);
   const [showNameForm, setShowNameForm] = useState(true);

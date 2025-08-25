@@ -5,12 +5,12 @@ const Landing = ({ onModeSelect }) => {
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
       <div className="max-w-4xl w-full text-center">
-        <img src="/assets/itba-logo.png" alt="ITBA" className="w-56 md:w-72 mx-auto mb-8" />
+        <img src={process.env.PUBLIC_URL + "/assets/itba-logo.png"} alt="ITBA" className="w-56 md:w-72 mx-auto mb-8" />
         <h1 className="text-6xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
           Quiz Interactivo
         </h1>
         <p className="text-2xl text-gray-400 mb-12">
-          Procedimientos Operativos - Clase 11
+          PSM & Sustentabilidad - Certificación
         </p>
         
         <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">

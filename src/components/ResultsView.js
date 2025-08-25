@@ -66,7 +66,7 @@ const ResultsView = ({ sessionCode, onBack }) => {
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-6xl mx-auto">
-        <img src="/assets/itba-logo.png" alt="ITBA" className="w-32 mx-auto mb-6" />
+        <img src={process.env.PUBLIC_URL + "/assets/itba-logo.png"} alt="ITBA" className="w-32 mx-auto mb-6" />
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-4xl font-semibold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">

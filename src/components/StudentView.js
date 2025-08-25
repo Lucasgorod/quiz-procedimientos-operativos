@@ -50,7 +50,7 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
         <div className="max-w-md w-full">
-          <img src="/assets/itba-logo.png" alt="ITBA" className="w-32 mx-auto mb-6" />
+          <img src={process.env.PUBLIC_URL + "/assets/itba-logo.png"} alt="ITBA" className="w-32 mx-auto mb-6" />
           <h1 className="text-4xl font-semibold text-center mb-8 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
             Unirse al Quiz
           </h1>
@@ -91,7 +91,7 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
         <div className="text-center">
-          <img src="/assets/itba-logo.png" alt="ITBA" className="w-32 mx-auto mb-6" />
+          <img src={process.env.PUBLIC_URL + "/assets/itba-logo.png"} alt="ITBA" className="w-32 mx-auto mb-6" />
           <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-4" />
           <h2 className="text-3xl font-semibold mb-2">¡Respuestas enviadas!</h2>
           <p className="text-gray-400 mb-6">Gracias por participar, {studentName}</p>
@@ -106,7 +106,7 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <div className="max-w-2xl mx-auto">
-        <img src="/assets/itba-logo.png" alt="ITBA" className="w-28 mx-auto mb-6" />
+        <img src={process.env.PUBLIC_URL + "/assets/itba-logo.png"} alt="ITBA" className="w-28 mx-auto mb-6" />
         {/* Progress bar */}
         <div className="mb-8">
           <div className="flex justify-between text-sm text-gray-400 mb-2">

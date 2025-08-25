@@ -7,22 +7,22 @@ export const questions = [
     options: [
       { 
         id: 'a', 
-        text: 'Los procedimientos operativos solo deben desarrollarse una vez que la planta está en funcionamiento.', 
+        text: 'La seguridad de procesos está mencionada explícitamente en los Objetivos de Desarrollo Sostenible.', 
         correct: false 
       },
       { 
         id: 'b', 
-        text: 'Un procedimiento operativo bien diseñado debe incluir o referenciar prácticas de trabajo seguro.', 
+        text: 'El componente "Social" de ESG incluye salud y seguridad de los trabajadores.', 
         correct: true 
       },
       { 
         id: 'c', 
-        text: 'La industria aeronáutica ha reducido accidentes gracias a la improvisación en situaciones críticas.', 
+        text: 'La sostenibilidad solo se refiere al impacto ambiental.', 
         correct: false 
       },
       { 
         id: 'd', 
-        text: 'Los procedimientos operativos no son necesarios en situaciones de emergencia.', 
+        text: 'La reputación corporativa no se ve afectada por incidentes de seguridad de procesos.', 
         correct: false 
       }
     ]
@@ -31,51 +31,60 @@ export const questions = [
     id: 'q2',
     type: 'multiple',
     title: '2. Opción Múltiple',
-    subtitle: '¿Cuál de los siguientes factores es una causa frecuente de que no se sigan los procedimientos operativos?',
+    subtitle: '¿Cuál de los siguientes estándares está relacionado con la medición de ESG?',
     options: [
-      { id: 'A', text: 'El procedimiento es muy corto' },
-      { id: 'B', text: 'El procedimiento está disponible en todo momento' },
-      { id: 'C', text: 'No recibí capacitación suficiente', correct: true },
-      { id: 'D', text: 'Todos los operadores prefieren seguir los procedimientos' }
+      { id: 'A', text: 'API 754' },
+      { id: 'B', text: 'GRI', correct: true },
+      { id: 'C', text: 'ISO 9001' },
+      { id: 'D', text: 'OSHA 1910.119' }
     ]
   },
   {
     id: 'q3',
-    type: 'match',
-    title: '3. Relacionar Columnas',
-    subtitle: 'Relacioná cada concepto con su definición:',
-    definitions: [
-      {
-        id: '1',
-        text: 'Describe cómo realizar una tarea minimizando riesgos para la salud y seguridad'
-      },
-      {
-        id: '2',
-        text: 'Describe cómo operar un sistema o proceso de forma eficiente y controlada'
-      }
-    ],
-    pairs: [
-      {
-        concept: 'A. Procedimiento Operativo',
-        correctAnswer: '2'
-      },
-      {
-        concept: 'B. Práctica de Trabajo Seguro',
-        correctAnswer: '1'
-      }
+    type: 'multiple',
+    title: '3. Opción Múltiple',
+    subtitle: '¿Qué evento fue un catalizador para el desarrollo del enfoque PSM?',
+    options: [
+      { id: 'A', text: 'Deepwater Horizon' },
+      { id: 'B', text: 'Seveso' },
+      { id: 'C', text: 'Exxon Valdez' },
+      { id: 'D', text: 'Bhopal', correct: true }
     ]
   },
   {
     id: 'q4',
-    type: 'open',
-    title: '4. Pregunta Abierta',
-    subtitle: 'Mencioná dos beneficios de contar con procedimientos operativos bien diseñados en una planta industrial.'
+    type: 'multiple',
+    title: '4. Opción Múltiple',
+    subtitle: '¿Cuál de estos ODS está más directamente vinculado a la prevención de liberaciones químicas peligrosas?',
+    options: [
+      { id: 'A', text: 'ODS 3', correct: true },
+      { id: 'B', text: 'ODS 8' },
+      { id: 'C', text: 'ODS 11' },
+      { id: 'D', text: 'ODS 17' }
+    ]
   },
   {
     id: 'q5',
-    type: 'fill',
-    title: '5. Completar',
-    subtitle: 'Completá la frase:',
-    text: 'Los procedimientos operativos actúan como ___ en la gestión de riesgos de procesos y son requeridos por ___ y estándares.'
+    type: 'multiple',
+    title: '5. Opción Múltiple',
+    subtitle: '¿Qué paso de la integración estratégica busca asegurar que PSM esté en la toma de decisiones?',
+    options: [
+      { id: 'A', text: 'Diagnóstico y alineación' },
+      { id: 'B', text: 'Cultura y liderazgo' },
+      { id: 'C', text: 'Integración en la gobernanza', correct: true },
+      { id: 'D', text: 'Medición y comunicación' }
+    ]
+  },
+  {
+    id: 'q6',
+    type: 'multiple',
+    title: '6. Opción Múltiple',
+    subtitle: '¿Cuál es una de las oportunidades de la implementación conjunta de PSM + Sustentabilidad?',
+    options: [
+      { id: 'A', text: 'Fragmentación organizacional' },
+      { id: 'B', text: 'Mayor eficiencia operativa', correct: true },
+      { id: 'C', text: 'Complejidad regulatoria' },
+      { id: 'D', text: 'Gestión de datos limitada' }
+    ]
   }
 ];

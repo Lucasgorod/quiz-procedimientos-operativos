@@ -1,6 +1,6 @@
-# Quiz Interactivo - Procedimientos Operativos
+# Quiz Interactivo - PSM & Sustentabilidad
 
-Una aplicación web para crear quizzes interactivos en tiempo real sin necesidad de Mentimeter.
+Una aplicación web para crear quizzes interactivos sobre Process Safety Management (PSM) y Sustentabilidad en tiempo real.
 
 ## 🚀 Inicio Rápido
 

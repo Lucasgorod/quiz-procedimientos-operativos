@@ -1,90 +1,104 @@
 export const questions = [
   {
     id: 'q1',
-    type: 'trueFalse',
-    title: '1. Verdadero o Falso',
-    subtitle: 'Indicá si las siguientes afirmaciones son verdaderas o falsas:',
+    type: 'multiple',
+    title: '🟦 Parte 1: Opción múltiple',
+    subtitle: '¿Cuál de las siguientes características es esencial para un liderazgo efectivo en seguridad de procesos?',
     options: [
-      { 
-        id: 'a', 
-        text: 'La seguridad de procesos está mencionada explícitamente en los Objetivos de Desarrollo Sostenible.', 
-        correct: false 
-      },
-      { 
-        id: 'b', 
-        text: 'El componente "Social" de ESG incluye salud y seguridad de los trabajadores.', 
-        correct: true 
-      },
-      { 
-        id: 'c', 
-        text: 'La sostenibilidad solo se refiere al impacto ambiental.', 
-        correct: false 
-      },
-      { 
-        id: 'd', 
-        text: 'La reputación corporativa no se ve afectada por incidentes de seguridad de procesos.', 
-        correct: false 
-      }
+      { id: 'A', text: 'Delegar completamente la gestión de riesgos' },
+      { id: 'B', text: 'Estar presente en el terreno', correct: true },
+      { id: 'C', text: 'Evitar involucrarse en decisiones técnicas' },
+      { id: 'D', text: 'Priorizar la producción sobre la seguridad' }
     ]
   },
   {
     id: 'q2',
     type: 'multiple',
-    title: '2. Opción Múltiple',
-    subtitle: '¿Cuál de los siguientes estándares está relacionado con la medición de ESG?',
+    title: '2. Opción múltiple',
+    subtitle: '¿Qué acción refleja coherencia entre el discurso y la práctica del liderazgo?',
     options: [
-      { id: 'A', text: 'API 754' },
-      { id: 'B', text: 'GRI', correct: true },
-      { id: 'C', text: 'ISO 9001' },
-      { id: 'D', text: 'OSHA 1910.119' }
+      { id: 'A', text: 'Comunicar la importancia de la seguridad sin participar en auditorías' },
+      { id: 'B', text: 'Reconocer buenas prácticas solo en reportes anuales' },
+      { id: 'C', text: 'Liderar con el ejemplo en recorridas de seguridad', correct: true },
+      { id: 'D', text: 'Delegar la cultura de seguridad al área de RRHH' }
     ]
   },
   {
     id: 'q3',
     type: 'multiple',
-    title: '3. Opción Múltiple',
-    subtitle: '¿Qué evento fue un catalizador para el desarrollo del enfoque PSM?',
+    title: '3. Opción múltiple',
+    subtitle: '¿Cuál de estas prácticas fortalece la cultura de seguridad?',
     options: [
-      { id: 'A', text: 'Deepwater Horizon' },
-      { id: 'B', text: 'Seveso' },
-      { id: 'C', text: 'Exxon Valdez' },
-      { id: 'D', text: 'Bhopal', correct: true }
+      { id: 'A', text: 'Sancionar sin explicar' },
+      { id: 'B', text: 'Compartir aprendizajes de incidentes', correct: true },
+      { id: 'C', text: 'Evitar hablar de errores' },
+      { id: 'D', text: 'Centralizar la toma de decisiones' }
     ]
   },
   {
     id: 'q4',
-    type: 'multiple',
-    title: '4. Opción Múltiple',
-    subtitle: '¿Cuál de estos ODS está más directamente vinculado a la prevención de liberaciones químicas peligrosas?',
+    type: 'trueFalse',
+    title: '🟨 Parte 2: Verdadero / Falso',
+    subtitle: 'Indicá si las siguientes afirmaciones son verdaderas o falsas:',
     options: [
-      { id: 'A', text: 'ODS 3', correct: true },
-      { id: 'B', text: 'ODS 8' },
-      { id: 'C', text: 'ODS 11' },
-      { id: 'D', text: 'ODS 17' }
+      { 
+        id: 'a', 
+        text: 'La credibilidad del líder se construye solo con conocimiento técnico.', 
+        correct: false 
+      },
+      { 
+        id: 'b', 
+        text: 'La retroalimentación genuina y el reconocimiento son parte de las características del liderazgo efectivo.', 
+        correct: true 
+      },
+      { 
+        id: 'c', 
+        text: 'Un líder en seguridad de procesos debe actuar como guardián cultural, reforzando valores en cada decisión.', 
+        correct: true 
+      },
+      { 
+        id: 'd', 
+        text: 'La consistencia entre lo que se dice y lo que se hace no es relevante si se cumplen los indicadores.', 
+        correct: false 
+      }
     ]
   },
   {
     id: 'q5',
-    type: 'multiple',
-    title: '5. Opción Múltiple',
-    subtitle: '¿Qué paso de la integración estratégica busca asegurar que PSM esté en la toma de decisiones?',
+    type: 'fill',
+    title: '🟩 Parte 3: Completar la frase',
+    subtitle: 'Completá las siguientes frases con las palabras correctas:',
     options: [
-      { id: 'A', text: 'Diagnóstico y alineación' },
-      { id: 'B', text: 'Cultura y liderazgo' },
-      { id: 'C', text: 'Integración en la gobernanza', correct: true },
-      { id: 'D', text: 'Medición y comunicación' }
-    ]
-  },
-  {
-    id: 'q6',
-    type: 'multiple',
-    title: '6. Opción Múltiple',
-    subtitle: '¿Cuál es una de las oportunidades de la implementación conjunta de PSM + Sustentabilidad?',
-    options: [
-      { id: 'A', text: 'Fragmentación organizacional' },
-      { id: 'B', text: 'Mayor eficiencia operativa', correct: true },
-      { id: 'C', text: 'Complejidad regulatoria' },
-      { id: 'D', text: 'Gestión de datos limitada' }
+      {
+        id: 'a',
+        text: 'El liderazgo efectivo en seguridad de procesos requiere __________ activa en el terreno.',
+        correct: 'presencia',
+        alternatives: ['presencia']
+      },
+      {
+        id: 'b', 
+        text: 'Para generar sentido en los colaboradores, el líder debe __________ el propósito de la seguridad.',
+        correct: 'comunicar',
+        alternatives: ['comunicar']
+      },
+      {
+        id: 'c',
+        text: 'La __________ genuina fortalece la confianza y el compromiso del equipo.',
+        correct: 'retroalimentación',
+        alternatives: ['retroalimentación', 'retroalimentacion']
+      },
+      {
+        id: 'd',
+        text: 'Un líder creíble __________ con el ejemplo en temas de seguridad.',
+        correct: 'lidera',
+        alternatives: ['lidera']
+      },
+      {
+        id: 'e',
+        text: 'La cultura de seguridad se refuerza cuando el liderazgo es __________ y consistente.',
+        correct: 'visible',
+        alternatives: ['visible']
+      }
     ]
   }
 ];

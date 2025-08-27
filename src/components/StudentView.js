@@ -8,12 +8,11 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
   const [sessionInput, setSessionInput] = useState(initialSessionCode || '');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({
-    q1: {},
+    q1: '',
     q2: '',
     q3: '',
-    q4: '',
-    q5: '',
-    q6: ''
+    q4: {},
+    q5: {}
   });
   const [submitted, setSubmitted] = useState(false);
   const [showNameForm, setShowNameForm] = useState(true);
@@ -119,9 +118,9 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
                   <p className="text-gray-300">{opt.id}) {opt.text}</p>
                   <div className="flex gap-3">
                     <button
-                      onClick={() => setAnswers({ ...answers, q1: { ...answers.q1, [opt.id]: true }})}
+                      onClick={() => setAnswers({ ...answers, [question.id]: { ...answers[question.id], [opt.id]: true }})}
                       className={`px-6 py-2 rounded-full transition-all ${
-                        answers.q1[opt.id] === true 
+                        answers[question.id]?.[opt.id] === true 
                           ? 'bg-green-500 text-white' 
                           : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                       }`}
@@ -129,9 +128,9 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
                       Verdadero
                     </button>
                     <button
-                      onClick={() => setAnswers({ ...answers, q1: { ...answers.q1, [opt.id]: false }})}
+                      onClick={() => setAnswers({ ...answers, [question.id]: { ...answers[question.id], [opt.id]: false }})}
                       className={`px-6 py-2 rounded-full transition-all ${
-                        answers.q1[opt.id] === false 
+                        answers[question.id]?.[opt.id] === false 
                           ? 'bg-red-500 text-white' 
                           : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                       }`}
@@ -216,23 +215,26 @@ const StudentView = ({ sessionCode: initialSessionCode }) => {
           {/* Fill */}
           {question.type === 'fill' && (
             <div className="space-y-4">
-              <p className="text-lg">
-                Los procedimientos operativos actúan como{' '}
-                <input
-                  type="text"
-                  value={answers.q5.blank1}
-                  onChange={(e) => setAnswers({ ...answers, q5: { ...answers.q5, blank1: e.target.value }})}
-                  className="inline-block w-40 px-3 py-1 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />{' '}
-                en la gestión de riesgos de procesos y son requeridos por{' '}
-                <input
-                  type="text"
-                  value={answers.q5.blank2}
-                  onChange={(e) => setAnswers({ ...answers, q5: { ...answers.q5, blank2: e.target.value }})}
-                  className="inline-block w-40 px-3 py-1 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />{' '}
-                y estándares.
-              </p>
+              {question.options.map(opt => (
+                <div key={opt.id} className="space-y-2">
+                  <p className="text-lg text-gray-300">
+                    {opt.text.split('__________').map((part, index) => (
+                      <span key={index}>
+                        {part}
+                        {index < opt.text.split('__________').length - 1 && (
+                          <input
+                            type="text"
+                            value={answers[question.id]?.[opt.id] || ''}
+                            onChange={(e) => setAnswers({ ...answers, [question.id]: { ...answers[question.id], [opt.id]: e.target.value }})}
+                            className="inline-block w-40 px-3 py-1 bg-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mx-1"
+                            placeholder="..."
+                          />
+                        )}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </div>

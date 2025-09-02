@@ -12,34 +12,24 @@ const ResultsView = ({ sessionCode, onBack }) => {
       q1: { A: 0, B: 0, C: 0, D: 0 },
       q2: { A: 0, B: 0, C: 0, D: 0 },
       q3: { A: 0, B: 0, C: 0, D: 0 },
-      q4: { a: { true: 0, false: 0 }, b: { true: 0, false: 0 }, c: { true: 0, false: 0 }, d: { true: 0, false: 0 } },
-      q5: {}
+      q4: { A: 0, B: 0, C: 0, D: 0 },
+      q5: { a: { true: 0, false: 0 }, b: { true: 0, false: 0 }, c: { true: 0, false: 0 } }
     };
 
     responses.forEach(response => {
       const { answers } = response;
       
-      // Q1-Q3 - Opción múltiple
+      // Q1-Q4 - Opción múltiple
       if (answers.q1) stats.q1[answers.q1]++;
       if (answers.q2) stats.q2[answers.q2]++;
       if (answers.q3) stats.q3[answers.q3]++;
+      if (answers.q4) stats.q4[answers.q4]++;
 
-      // Q4 - Verdadero/Falso
-      if (answers.q4) {
-        Object.keys(answers.q4).forEach(key => {
-          if (answers.q4[key] === true) stats.q4[key].true++;
-          if (answers.q4[key] === false) stats.q4[key].false++;
-        });
-      }
-
-      // Q5 - Fill in the blank
+      // Q5 - Verdadero/Falso
       if (answers.q5) {
         Object.keys(answers.q5).forEach(key => {
-          if (!stats.q5[key]) stats.q5[key] = {};
-          const answer = answers.q5[key]?.toLowerCase().trim();
-          if (answer) {
-            stats.q5[key][answer] = (stats.q5[key][answer] || 0) + 1;
-          }
+          if (answers.q5[key] === true) stats.q5[key].true++;
+          if (answers.q5[key] === false) stats.q5[key].false++;
         });
       }
     });
@@ -144,7 +134,7 @@ const ResultsView = ({ sessionCode, onBack }) => {
             </div>
           </div>
 
-          {/* Pregunta 3: Cultura de Seguridad */}
+          {/* Pregunta 3: Normalización de desvíos */}
           <div className="bg-gray-900 rounded-3xl p-6">
             <div className="mb-6">
               <h3 className="text-xl font-semibold mb-3 text-blue-400">Pregunta 3: Opción múltiple</h3>
@@ -180,16 +170,52 @@ const ResultsView = ({ sessionCode, onBack }) => {
             </div>
           </div>
 
-          {/* Pregunta 4: Verdadero/Falso */}
+          {/* Pregunta 4: Abordaje cultural */}
           <div className="bg-gray-900 rounded-3xl p-6">
             <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-3 text-yellow-400">🟨 Pregunta 4: Verdadero / Falso</h3>
+              <h3 className="text-xl font-semibold mb-3 text-blue-400">Pregunta 4: Opción múltiple</h3>
               <p className="text-base text-gray-300 font-medium">{questions[3].subtitle}</p>
             </div>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {questions[3].options.map(opt => {
-                const trueCount = stats.q4[opt.id]?.true || 0;
-                const falseCount = stats.q4[opt.id]?.false || 0;
+                const perc = total > 0 ? Math.round(((stats.q4[opt.id] || 0) / total) * 100) : 0;
+                
+                return (
+                  <div key={opt.id} className="bg-gray-800 rounded-2xl p-4">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1 pr-4">
+                        <span className="text-base text-gray-200">
+                          <span className="font-semibold text-blue-300">{opt.id}.</span> {opt.text}
+                        </span>
+                        {opt.correct && <span className="ml-2 text-green-400 font-semibold">✓ Correcta</span>}
+                      </div>
+                      <div className="text-right">
+                        <span className="text-lg font-bold text-gray-300">{perc}%</span>
+                        <div className="text-xs text-gray-500">({stats.q4[opt.id] || 0} respuestas)</div>
+                      </div>
+                    </div>
+                    <div className="bg-gray-700 rounded-full h-3 overflow-hidden">
+                      <div 
+                        className={`h-full transition-all duration-700 ${opt.correct ? 'bg-green-500' : 'bg-blue-500'}`}
+                        style={{ width: `${perc}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Pregunta 5: Verdadero/Falso */}
+          <div className="bg-gray-900 rounded-3xl p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold mb-3 text-yellow-400">🟨 Pregunta 5: Verdadero / Falso</h3>
+              <p className="text-base text-gray-300 font-medium">{questions[4].subtitle}</p>
+            </div>
+            <div className="space-y-6">
+              {questions[4].options.map(opt => {
+                const trueCount = stats.q5[opt.id]?.true || 0;
+                const falseCount = stats.q5[opt.id]?.false || 0;
                 const totalResponses = trueCount + falseCount;
                 const truePerc = totalResponses > 0 ? Math.round((trueCount / totalResponses) * 100) : 0;
                 const falsePerc = totalResponses > 0 ? Math.round((falseCount / totalResponses) * 100) : 0;
@@ -237,51 +263,6 @@ const ResultsView = ({ sessionCode, onBack }) => {
                   </div>
                 );
               })}
-            </div>
-          </div>
-
-          {/* Pregunta 5: Completar frases */}
-          <div className="bg-gray-900 rounded-3xl p-6">
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold mb-3 text-green-400">🟩 Pregunta 5: Completar la frase</h3>
-              <p className="text-base text-gray-300 font-medium">{questions[4].subtitle}</p>
-            </div>
-            <div className="space-y-6">
-              {questions[4].options.map(opt => (
-                <div key={opt.id} className="bg-gray-800 rounded-2xl p-4">
-                  <div className="mb-4">
-                    <p className="text-base text-gray-200 mb-2">
-                      <span className="font-semibold text-green-300">{opt.id.toUpperCase()})</span> {opt.text.replace('__________', `[${opt.correct}]`)}
-                    </p>
-                    <p className="text-sm text-green-400 font-medium">✓ Respuesta correcta: "{opt.correct}"</p>
-                  </div>
-                  <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-gray-400">Respuestas más frecuentes:</h4>
-                    {stats.q5[opt.id] && Object.entries(stats.q5[opt.id])
-                      .sort(([,a], [,b]) => b - a)
-                      .slice(0, 5)
-                      .map(([answer, count]) => {
-                        const perc = Math.round((count / total) * 100);
-                        const isCorrect = opt.alternatives?.some(alt => 
-                          alt.toLowerCase() === answer.toLowerCase()
-                        );
-                        
-                        return (
-                          <div key={answer} className="flex justify-between items-center py-2 px-3 bg-gray-700 rounded-lg">
-                            <span className={`text-sm font-medium ${isCorrect ? 'text-green-400' : 'text-gray-300'}`}>
-                              "{answer}" {isCorrect && '✓'}
-                            </span>
-                            <span className="text-sm font-bold text-gray-300">{perc}% ({count})</span>
-                          </div>
-                        );
-                      })
-                    }
-                    {(!stats.q5[opt.id] || Object.keys(stats.q5[opt.id]).length === 0) && (
-                      <p className="text-sm text-gray-500 italic">No hay respuestas aún</p>
-                    )}
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
